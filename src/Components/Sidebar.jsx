@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "../assets/amdox-logo.png";
 
 const Sidebar = ({ open, setOpen }) => {
   return (
@@ -15,7 +16,10 @@ const Sidebar = ({ open, setOpen }) => {
         ❌
       </button>
 
-      <h2 className="text-xl font-bold mb-6">Amdox ERP System</h2>
+      <div className="flex flex-col items-center mb-6">
+        <img src={logo} alt="Logo" className="h-10 mb-2" />
+        <h2 className="text-sm font-semibold text-gray-300">Amdox ERP System</h2>
+      </div>
 
       <ul className="space-y-4">
         <li>

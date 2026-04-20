@@ -1,40 +1,65 @@
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/amdox-logo.png";
+import illustration from "../assets/login-illustration.png";
 
 const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen px-4 flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-6 rounded shadow w-full max-w-sm">
-        <h2 className="text-xl mb-4 text-center font-bold">Login</h2>
+    <div className="relative min-h-screen flex justify-center items-center px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {/* Glow Effects */}
+      <div className="absolute w-[400px] h-[400px] bg-blue-500/20 rounded-full blur-3xl top-10 left-10"></div>
+      <div className="absolute w-[400px] h-[400px] bg-indigo-500/20 rounded-full blur-3xl bottom-10 right-10"></div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="border p-2 w-full mb-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+      {/* Glass Card */}
+      <div className="relative z-10 bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-lg flex w-full max-w-5xl overflow-hidden">
+        {/* LEFT IMAGE */}
+        <div className="hidden md:flex w-1/2 items-center justify-center">
+          <img
+            src={illustration}
+            alt="Work Illustration"
+            className="w-full h-full object-contain opacity-90"
+          />
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 w-full mb-3 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
+        {/* RIGHT FORM */}
+        <div className="w-full md:w-1/2 p-6 sm:p-8">
+          <div className="flex flex-col items-center mb-6">
+            <img src={logo} alt="Company Logo" className="h-12 mb-2" />
+            <h2 className="text-xl font-bold text-white">
+              Login to Your Account
+            </h2>
+          </div>
 
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="bg-blue-600 text-white p-2 w-full rounded hover:bg-blue-700 transition"
-        >
-          Login
-        </button>
-        <p className="text-center mt-4 text-sm">
-          Don’t have an account?{" "}
-          <span
-            onClick={() => navigate("/signup")}
-            className="text-blue-600 cursor-pointer hover:underline"
+          <input
+            type="email"
+            placeholder="Email"
+            className="bg-white/20 text-white placeholder-gray-300 border border-white/30 p-2 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="bg-white/20 text-white placeholder-gray-300 border border-white/30 p-2 w-full mb-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="bg-blue-600 text-white p-2 w-full rounded hover:bg-blue-700 transition shadow-md"
           >
-            Sign Up
-          </span>
-        </p>
+            Login
+          </button>
+
+          <p className="text-center mt-4 text-sm text-gray-300">
+            Don’t have an account?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              className="text-blue-400 cursor-pointer hover:underline"
+            >
+              Sign Up
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
