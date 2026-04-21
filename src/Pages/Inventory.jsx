@@ -1,17 +1,33 @@
+import { useState } from "react";
 import Layout from "../Components/Layout";
 
 const Inventory = () => {
-  const items = [
+  const [items, setItems] = useState([
     { name: "Laptop", quantity: 10, status: "Available" },
     { name: "Mouse", quantity: 50, status: "Available" },
     { name: "Keyboard", quantity: 60, status: "Available" },
     { name: "Monitor", quantity: 0, status: "Not Available" },
-  ];
+  ]);
+
+  const[name, setName] = useState("");
+  const[quantity, setQuantity] = useState("");
+  const[status, setStatus] = useState("");
+
+  const handleAddItems = () => {
+    if(!name || !quantity || !status) return;
+
+    const newItem = {name, quantity, status};
+
+    setItems([...items,newItem]);
+
+    setName("");
+    setQuantity("");
+    setStatus("");
+  };
 
   return (
     <Layout title="Inventory">
       <div className="flex flex-col gap-6">
-
         {/* Table */}
         <div className="bg-white p-4 rounded shadow overflow-x-auto">
           <table className="w-full">
@@ -49,13 +65,27 @@ const Inventory = () => {
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg mb-4">Add Item</h2>
 
-          <input placeholder="Item Name" className="border p-2 mb-2 w-full sm:w-auto" />
-          <input placeholder="Quantity" className="border p-2 mb-2 w-full sm:w-auto" />
-          <input placeholder="Status" className="border p-2 mb-2 w-full sm:w-auto" />
+          <input
+            placeholder="Item Name"
+            value={name}
+            onChange={(e)=>setName(e.target.value)}
+            className="border p-2 mb-2 w-full sm:w-auto"
+          />
+          <input
+            placeholder="Quantity"
+            value={quantity}
+            onChange={(e)=>setQuantity(e.target.value)}
+            className="border p-2 mb-2 w-full sm:w-auto"
+          />
+          <input
+            placeholder="Status"
+            value={status}
+            onChange={(e)=>setStatus(e.target.value)}
+            className="border p-2 mb-2 w-full sm:w-auto"
+          />
 
-          <button className="bg-blue-600 text-white p-2">Add</button>
+          <button onClick={handleAddItems} className="bg-blue-600 text-white p-2">Add</button>
         </div>
-
       </div>
     </Layout>
   );

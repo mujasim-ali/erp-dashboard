@@ -1,11 +1,32 @@
+import { useState } from "react";
 import Layout from "../Components/Layout";
 
 const Projects = () => {
-  const projects = [
+  //  1. Projects state
+  const [projects, setProjects] = useState([
     { name: "ERP System", manager: "Ali", status: "In Progress" },
     { name: "Website", manager: "Rahul", status: "Completed" },
     { name: "Design", manager: "John", status: "Completed" },
-  ];
+  ]);
+
+  //  2. Form state
+  const [name, setName] = useState("");
+  const [manager, setManager] = useState("");
+  const [status, setStatus] = useState("");
+
+  //  3. Add function
+  const handleAddProject = () => {
+    if (!name || !manager || !status) return;
+
+    const newProject = { name, manager, status };
+
+    setProjects([...projects, newProject]);
+
+    // Clear inputs
+    setName("");
+    setManager("");
+    setStatus("");
+  };
 
   return (
     <Layout title="Projects">
@@ -48,11 +69,33 @@ const Projects = () => {
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-lg mb-4">Add Project</h2>
 
-          <input placeholder="Project Name" className="border p-2 mb-2 w-full sm:w-auto" />
-          <input placeholder="Manager" className="border p-2 mb-2 w-full sm:w-auto" />
-          <input placeholder="Status" className="border p-2 mb-2 w-full sm:w-auto" />
+          <input
+            placeholder="Project Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="border p-2 mb-2 w-full sm:w-auto"
+          />
 
-          <button className="bg-blue-600 text-white p-2">Add</button>
+          <input
+            placeholder="Manager"
+            value={manager}
+            onChange={(e) => setManager(e.target.value)}
+            className="border p-2 mb-2 w-full sm:w-auto"
+          />
+
+          <input
+            placeholder="Status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="border p-2 mb-2 w-full sm:w-auto"
+          />
+
+          <button
+            onClick={handleAddProject}
+            className="bg-blue-600 text-white p-2"
+          >
+            Add
+          </button>
         </div>
 
       </div>
