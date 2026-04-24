@@ -1,101 +1,117 @@
 import { useState } from "react";
 import Layout from "../Components/Layout";
+import DataTable from "../Components/DataTable";
+import EmployeeForm from "../Components/EmployeeForm";
+import Modal from "../Components/Modal";
+import ConfirmModal from "../Components/ConfirmModal";
 
 const Employees = () => {
-  const [search, setSearch] = useState("");
-
   const [employees, setEmployees] = useState([
-    { name: "Ali", email: "ali@gmail.com", role: "Manager" },
-    { name: "Rahul", email: "rahul@gmail.com", role: "Developer" },
-    { name: "Sara", email: "sara@gmail.com", role: "HR" },
-    { name: "John", email: "john@gmail.com", role: "Designer" },
+    { id: 1, name: "Ali", email: "ali@gmail.com", role: "Manager" },
+    { id: 2, name: "Rahul", email: "rahul@gmail.com", role: "Developer" },
   ]);
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [search, setSearch] = useState("");
 
-  const handleAddEmployee = () => {
-    if (!name || !email || !role) return;
+  const [open, setOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState(null);
 
-    const newEmployee = { name, email, role };
-    setEmployees([...employees, newEmployee]);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
 
-    //clear inputs
-    setName("");
-    setEmail("");
-    setRole("");
+  // ADD + EDIT
+  const handleSave = (emp) => {
+    if (editingEmployee) {
+      setEmployees((prev) =>
+        prev.map((e) => (e.id === emp.id ? emp : e))
+      );
+    } else {
+      setEmployees((prev) => [...prev, emp]);
+    }
+
+    setOpen(false);
+    setEditingEmployee(null);
   };
 
-  const filteredEmployees = employees.filter((emp) =>
+  // DELETE (open popup)
+  const handleDeleteClick = (id) => {
+    setSelectedId(id);
+    setConfirmOpen(true);
+  };
+
+  // DELETE confirm
+  const confirmDelete = () => {
+    setEmployees((prev) =>
+      prev.filter((emp) => emp.id !== selectedId)
+    );
+    setConfirmOpen(false);
+    setSelectedId(null);
+  };
+
+  // EDIT
+  const handleEdit = (emp) => {
+    setEditingEmployee(emp);
+    setOpen(true);
+  };
+
+  const filteredEmployees = employees.filter(
+    (emp) =>
       emp.name.toLowerCase().includes(search.toLowerCase()) ||
-      emp.email.toLowerCase().includes(search.toLowerCase()),
+      emp.email.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <Layout title="Employees">
       <div className="flex flex-col gap-6">
-        <input
-          type="text"
-          placeholder="Search by name..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 mb-4 w-full sm:w-60 rounded"
-        />
 
-        {/* Table */}
-        <div className="bg-white p-4 rounded shadow overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="text-left border-b">
-                <th className="p-2">Name</th>
-                <th className="p-2">Email</th>
-                <th className="p-2">Role</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {filteredEmployees.map((emp) => (
-                <tr key={emp.email} className="border-b hover:bg-gray-100">
-                  <td className="p-2">{emp.name}</td>
-                  <td className="p-2">{emp.email}</td>
-                  <td className="p-2">{emp.role}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Form */}
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg mb-4">Add Employee</h2>
-
+        {/* Top Bar */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
           <input
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border p-2 mb-2 w-full sm:w-auto"
-          />
-          <input
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border p-2 mb-2 w-full sm:w-auto"
-          />
-          <input
-            placeholder="Role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="border p-2 mb-2 w-full sm:w-auto"
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border p-2 rounded w-full sm:w-60"
           />
 
           <button
-            onClick={handleAddEmployee}
-            className="bg-blue-600 text-white p-2"
+            onClick={() => {
+              setEditingEmployee(null);
+              setOpen(true);
+            }}
+            className="bg-blue-600 text-white px-4 py-2 rounded"
           >
-            Add
+            + Add Employee
           </button>
         </div>
+
+        {/* Table */}
+        <div className="bg-white p-4 rounded shadow overflow-x-auto">
+          <DataTable
+            data={filteredEmployees}
+            onEdit={handleEdit}
+            onDelete={handleDeleteClick}
+          />
+        </div>
+
+        {/* Add/Edit Modal */}
+        {open && (
+          <Modal onClose={() => setOpen(false)}>
+            <EmployeeForm
+              onSave={handleSave}
+              editingEmployee={editingEmployee}
+            />
+          </Modal>
+        )}
+
+        {/* Confirm Delete Modal */}
+        {confirmOpen && (
+          <ConfirmModal
+            onConfirm={confirmDelete}
+            onCancel={() => setConfirmOpen(false)}
+          />
+        )}
+
       </div>
     </Layout>
   );
