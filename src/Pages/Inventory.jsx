@@ -68,7 +68,7 @@ const Inventory = () => {
 
         {/* Table */}
         <div className="bg-white p-4 rounded shadow overflow-x-auto">
-          <table className="w-full min-w-[500px]">
+          <table className="w-full">
             <thead>
               <tr className="text-left border-b">
                 <th className="p-2">Item Name</th>
@@ -88,8 +88,8 @@ const Inventory = () => {
                     <span
                       className={
                         item.status === "Available"
-                          ? "bg-green-100 text-green-700 px-2 py-1 rounded text-sm"
-                          : "bg-red-100 text-red-700 px-2 py-1 rounded text-sm"
+                          ? "bg-green-100 text-green-700 px-2 py-1 rounded text-sm text-nowrap"
+                          : "bg-red-100 text-red-700 px-2 py-1 rounded text-sm text-nowrap"
                       }
                     >
                       {item.status}

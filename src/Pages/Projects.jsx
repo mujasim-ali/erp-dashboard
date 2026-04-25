@@ -74,7 +74,7 @@ const Projects = () => {
 
         {/* Table */}
         <div className="bg-white p-4 rounded shadow overflow-x-auto">
-          <table className="w-full min-w-[500px]">
+          <table className="w-full sm:min-w-[500px]">
             <thead>
               <tr className="text-left border-b">
                 <th className="p-2">Project Name</th>
@@ -95,8 +95,8 @@ const Projects = () => {
                     <span
                       className={
                         project.status === "Completed"
-                          ? "bg-green-100 text-green-700 px-2 py-1 rounded text-sm"
-                          : "bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-sm"
+                          ? "bg-green-100 text-green-700 px-2 py-1 rounded text-sm text-nowrap"
+                          : "bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-sm text-nowrap"
                       }
                     >
                       {project.status}

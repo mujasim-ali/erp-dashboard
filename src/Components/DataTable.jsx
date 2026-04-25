@@ -1,6 +1,6 @@
 const DataTable = ({ data, onEdit, onDelete }) => {
   return (
-    <table className="w-full min-w-[500px]">
+    <table className="w-full sm:min-w-[500px]">
       <thead>
         <tr className="text-left border-b">
           <th className="p-2">Name</th>
