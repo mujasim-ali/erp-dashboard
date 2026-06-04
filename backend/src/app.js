@@ -42,6 +42,8 @@ app.use("/api/projects/:projectId/tasks", taskRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/employees", employeeRoutes);
+app.use("/api/inventory", inventoryRoutes);
 
 // ─── 404 handler ─────────────────────────────────────────────────────────────
 app.use((req, res) => {
