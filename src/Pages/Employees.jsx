@@ -4,12 +4,17 @@ import DataTable from "../Components/DataTable";
 import EmployeeForm from "../Components/EmployeeForm";
 import Modal from "../Components/Modal";
 import ConfirmModal from "../Components/ConfirmModal";
+import { useEffect } from "react";
+
+import {
+  getEmployees,
+  createEmployee,
+  updateEmployee,
+  deleteEmployee,
+} from "../api/employeeApi";
 
 const Employees = () => {
-  const [employees, setEmployees] = useState([
-    { id: 1, name: "Ali", email: "ali@gmail.com", role: "Manager" },
-    { id: 2, name: "Rahul", email: "rahul@gmail.com", role: "Developer" },
-  ]);
+  const [employees, setEmployees] = useState([]);
 
   const [search, setSearch] = useState("");
 
@@ -19,18 +24,36 @@ const Employees = () => {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
-  // ADD + EDIT
-  const handleSave = (emp) => {
-    if (editingEmployee) {
-      setEmployees((prev) =>
-        prev.map((e) => (e.id === emp.id ? emp : e))
-      );
-    } else {
-      setEmployees((prev) => [...prev, emp]);
-    }
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
 
-    setOpen(false);
-    setEditingEmployee(null);
+  const fetchEmployees = async () => {
+    try {
+      const res = await getEmployees();
+
+      setEmployees(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ADD + EDIT
+  const handleSave = async (emp) => {
+    try {
+      if (editingEmployee) {
+        await updateEmployee(editingEmployee._id, emp);
+      } else {
+        await createEmployee(emp);
+      }
+
+      fetchEmployees();
+
+      setOpen(false);
+      setEditingEmployee(null);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // DELETE (open popup)
@@ -40,12 +63,17 @@ const Employees = () => {
   };
 
   // DELETE confirm
-  const confirmDelete = () => {
-    setEmployees((prev) =>
-      prev.filter((emp) => emp.id !== selectedId)
-    );
-    setConfirmOpen(false);
-    setSelectedId(null);
+  const confirmDelete = async () => {
+    try {
+      await deleteEmployee(selectedId);
+
+      fetchEmployees();
+
+      setConfirmOpen(false);
+      setSelectedId(null);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // EDIT
@@ -57,13 +85,12 @@ const Employees = () => {
   const filteredEmployees = employees.filter(
     (emp) =>
       emp.name.toLowerCase().includes(search.toLowerCase()) ||
-      emp.email.toLowerCase().includes(search.toLowerCase())
+      emp.email.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
     <Layout title="Employees">
       <div className="flex flex-col gap-6">
-
         {/* Top Bar */}
         <div className="flex flex-col sm:flex-row gap-3 sm:justify-between sm:items-center">
           <input
@@ -111,7 +138,6 @@ const Employees = () => {
             onCancel={() => setConfirmOpen(false)}
           />
         )}
-
       </div>
     </Layout>
   );

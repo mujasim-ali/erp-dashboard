@@ -6,7 +6,7 @@ const Layout = ({ children, title }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex">
+    <div className="flex ">
       {open && (
         <div
           className="fixed inset-0 backdrop-blur-md bg-white/20 lg:hidden z-40"

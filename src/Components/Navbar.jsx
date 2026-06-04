@@ -2,16 +2,18 @@ import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ title, setOpen }) => {
   const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    navigate("/");
+  };
 
   return (
     <div className="bg-white shadow p-4 flex justify-between items-center">
-      
       {/* Left side */}
       <div className="flex items-center gap-4">
-        <button
-          onClick={() => setOpen(true)}
-          className="lg:hidden text-xl"
-        >
+        <button onClick={() => setOpen(true)} className="lg:hidden text-xl">
           ☰
         </button>
 
@@ -23,7 +25,7 @@ const Navbar = ({ title, setOpen }) => {
         <p className="text-gray-600 hidden sm:block">Hi, Admin</p>
 
         <button
-          onClick={() => navigate("/")}
+          onClick={() => {handleLogout}}
           className="bg-red-500 text-white px-3 py-1 rounded"
         >
           Logout

@@ -8,7 +8,7 @@ const Projects = () => {
   const [projects, setProjects] = useState([
     { id: 1, name: "ERP System", manager: "Ali", status: "In Progress" },
     { id: 2, name: "Website", manager: "Rahul", status: "Completed" },
-    { id: 3, name: "Design", manager: "John", status: "Completed" },
+    { id: 3, name: "Design", manager: "Priya", status: "Completed" },
   ]);
 
   const [open, setOpen] = useState(false);

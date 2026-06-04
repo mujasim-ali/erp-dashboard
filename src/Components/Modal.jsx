@@ -1,6 +1,6 @@
 const Modal = ({ children, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 overflow-x-hidden">
       <div className="bg-white p-6 rounded-xl w-[70%] sm:w-[400px] shadow-lg relative">
         
         <button

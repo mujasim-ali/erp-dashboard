@@ -12,7 +12,7 @@ const DataTable = ({ data, onEdit, onDelete }) => {
 
       <tbody>
         {data.map((emp) => (
-          <tr key={emp.id} className="border-b hover:bg-gray-100">
+          <tr key={emp._id} className="border-b hover:bg-gray-100">
             <td className="p-2">{emp.name}</td>
             <td className="p-2">{emp.email}</td>
             <td className="p-2">{emp.role}</td>
@@ -26,7 +26,7 @@ const DataTable = ({ data, onEdit, onDelete }) => {
               </button>
 
               <button
-                onClick={() => onDelete(emp.id)}
+                onClick={() => onDelete(emp._id)}
                 className="bg-red-500 text-white px-2 py-1 rounded"
               >
                 Delete

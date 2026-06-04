@@ -1,5 +1,7 @@
 import Card from "../Components/Card";
 import Layout from "../Components/Layout";
+import { useEffect, useState } from "react";
+import { getDashboardStats } from "../api/dashboardApi";
 
 import {
   BarChart,
@@ -21,6 +23,25 @@ const Dashboard = () => {
     { name: "Apr", projects: 5 },
   ];
 
+  const [stats, setStats] = useState({
+    employees: 0,
+    projects: 0,
+    inventory: 0,
+  });
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const res = await getDashboardStats();
+
+      setStats(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const pieData = [
     { name: "Completed", value: 7 },
     { name: "In Progress", value: 5 },
@@ -33,9 +54,11 @@ const Dashboard = () => {
       <div className="flex flex-col gap-6">
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <Card title="Total Employees" value="50" />
-          <Card title="Total Projects" value="12" />
-          <Card title="Inventory Items" value="120" />
+          <Card title="Total Employees" value={stats.employees} />
+
+          <Card title="Total Projects" value={stats.projects} />
+
+          <Card title="Inventory Items" value={stats.inventory} />
         </div>
 
         {/* Charts Section */}
