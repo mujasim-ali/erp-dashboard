@@ -139,15 +139,6 @@ async function initializeDatabase() {
     )
   `);
 
-  // Refresh tokens table
-  await db.execute(`
-    CREATE TABLE IF NOT EXISTS refresh_tokens (
-      token      TEXT PRIMARY KEY,
-      user_id    TEXT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
-      expires_at TEXT NOT NULL,
-      created_at TEXT DEFAULT (datetime('now'))
-    )
-  `);
 
   // AI chat history
   await db.execute(`
