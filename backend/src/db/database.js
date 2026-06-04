@@ -85,6 +85,70 @@ async function initializeDatabase() {
     )
   `);
 
+  // Refresh tokens (for token refresh system)
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS refresh_tokens (
+      token_id   TEXT PRIMARY KEY,
+      user_id    TEXT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+      token      TEXT NOT NULL UNIQUE,
+      expires_at TEXT NOT NULL,
+      is_valid   INTEGER DEFAULT 1,
+      created_at TEXT DEFAULT (datetime('now')),
+      revoked_at TEXT
+    )
+  `);
+
+  // Employees table
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS employees (
+      employee_id  TEXT PRIMARY KEY,
+      user_id      TEXT REFERENCES users(user_id) ON DELETE SET NULL,
+      name         TEXT NOT NULL,
+      email        TEXT UNIQUE NOT NULL,
+      phone        TEXT,
+      department   TEXT NOT NULL,
+      position     TEXT NOT NULL,
+      salary       REAL DEFAULT 0,
+      status       TEXT DEFAULT 'active' CHECK(status IN ('active','inactive','on_leave','terminated')),
+      joined_date  TEXT,
+      avatar_url   TEXT,
+      created_by   TEXT REFERENCES users(user_id),
+      created_at   TEXT DEFAULT (datetime('now')),
+      updated_at   TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // Inventory table
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS inventory (
+      item_id      TEXT PRIMARY KEY,
+      item_name    TEXT NOT NULL,
+      category     TEXT NOT NULL,
+      description  TEXT,
+      quantity     INTEGER NOT NULL DEFAULT 0,
+      unit         TEXT DEFAULT 'pcs',
+      unit_price   REAL DEFAULT 0,
+      supplier     TEXT,
+      sku          TEXT UNIQUE,
+      location     TEXT,
+      status       TEXT DEFAULT 'in_stock' CHECK(status IN ('in_stock','low_stock','out_of_stock','discontinued')),
+      reorder_level INTEGER DEFAULT 10,
+      created_by   TEXT REFERENCES users(user_id),
+      created_at   TEXT DEFAULT (datetime('now')),
+      updated_at   TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
+  // Refresh tokens table
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS refresh_tokens (
+      token      TEXT PRIMARY KEY,
+      user_id    TEXT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+      expires_at TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now'))
+    )
+  `);
+
   // AI chat history
   await db.execute(`
     CREATE TABLE IF NOT EXISTS ai_chat_history (
