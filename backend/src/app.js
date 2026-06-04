@@ -10,6 +10,8 @@ const boardRoutes = require("./routes/boards");
 const taskRoutes = require("./routes/tasks");
 const activityRoutes = require("./routes/activity");
 const aiRoutes = require("./routes/ai");
+const employeeRoutes = require("./routes/employees");
+const inventoryRoutes = require("./routes/inventory");
 
 const app = express();
 
